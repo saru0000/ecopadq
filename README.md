@@ -1,4 +1,4 @@
-Cybercom Queue
+EcoPAD Queue
 ====
 
-Example Cybercom task queue. Good starting repo for various asynchronous tasks. 
+Ecopad task queue. Good starting repo for various asynchronous tasks. 
