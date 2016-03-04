@@ -28,8 +28,8 @@ def teco_spruce_setup(pars):
     os.makedirs(resultDir)
     with open('templates/spruce_pars.tmpl','r') as f:
         template=Template(f.read())
-        with open(os.path.join(resultDir,'/spruce_pars.txt'),'w') as f2:
-            f2.write(template.render(**pars)) 
+    with open(os.path.join(resultDir,'/spruce_pars.txt'),'w') as f2:
+        f2.write(template.render(**pars)) 
     return "http://%s/mgmic_tasks/%s" % (host,task_id)   
 
 def teco_spruce_run(pars,forcing,obs,output,MCMC):
