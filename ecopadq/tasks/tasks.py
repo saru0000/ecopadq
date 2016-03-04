@@ -2,7 +2,7 @@ from celery.task import task
 from dockertask import docker_task
 from subprocess import call,STDOUT
 from jinja2 import Template
-import requests
+import requests,os
 
 #Default base directory 
 basedir="/data/static/"
