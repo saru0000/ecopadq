@@ -4,6 +4,7 @@ from setuptools import setup, find_packages
 setup(name='ecopadq',
       version='0.0',
       packages= find_packages(),
+      package_data={'ecopadq':['ecopadq/tasks/templates/*.tmpl']},
       install_requires=[
           'celery',
           'requests',
