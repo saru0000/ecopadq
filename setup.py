@@ -12,5 +12,5 @@ setup(name='ecopadq',
      dependency_links=[
           'https://github.com/ouinformatics/dockertask/zipball/master',
       ],
-      include_package_data=True
+      include_package_data=True,
 )
