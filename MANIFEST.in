@@ -1,2 +1,1 @@
-ecopadq/tasks/templates/*.tmpl
-ecopadq/ecopadq/tasks/templates/*.tmpl
+include ecopadq/tasks/templates/*.tmpl
