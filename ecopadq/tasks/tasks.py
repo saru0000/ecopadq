@@ -26,7 +26,8 @@ def teco_spruce_setup(pars):
     task_id = str(teco_spruce_setup.request.id)
     resultDir = os.path.join(basedir, 'ecopad_tasks/', task_id)
     os.makedirs(resultDir)
-    with open('templates/spruce_pars.tmpl','r') as f:
+    tmpl = os.path.join(os.path.abspath(__file__),'templates/spruce_pars.tmpl')
+    with open(tmpl,'r') as f:
         template=Template(f.read())
     with open(os.path.join(resultDir,'/spruce_pars.txt'),'w') as f2:
         f2.write(template.render(**pars)) 
