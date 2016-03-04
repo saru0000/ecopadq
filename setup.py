@@ -4,4 +4,12 @@ from setuptools import setup, find_packages
 setup(name='ecopadq',
       version='0.0',
       packages= find_packages(),
+      install_requires=[
+          'celery',
+          'requests',
+          'jinja2',
+      ],
+     dependency_links=[
+          'https://github.com/ouinformatics/dockertask/zipball/master',
+      ],
 )
