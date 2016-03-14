@@ -32,7 +32,7 @@ def teco_spruce_setup(pars):
         template=Template(f.read())
     with open(os.path.join(resultDir,'spruce_pars.txt'),'w') as f2:
         f2.write(template.render(pars)) 
-    return "http://%s/mgmic_tasks/%s" % (host,task_id)   
+    return "http://%s/ecopad_tasks/%s" % (host,task_id)   
 
 def teco_spruce_run(pars,forcing,obs,output,MCMC):
     """ Run task compile teco_spruce fortran code

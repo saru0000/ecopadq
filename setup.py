@@ -9,6 +9,7 @@ setup(name='ecopadq',
           'celery',
           'requests',
           'jinja2',
+          'https://github.com/ouinformatics/dockertask/zipball/master',
       ],
      dependency_links=[
           'https://github.com/ouinformatics/dockertask/zipball/master',
