@@ -11,7 +11,7 @@ setup(name='ecopadq',
           'jinja2',
       ],
      dependency_links=[
-          'https://github.com/ouinformatics/dockertask/zipball/master',
+          'https://github.com/ouinformatics/dockertask/zipball/master@0.0#egg=dockertask-0.0',
       ],
       include_package_data=True,
 )
