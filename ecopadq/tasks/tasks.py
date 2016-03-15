@@ -34,7 +34,7 @@ def teco_spruce_setup(pars):
     with open(params_file,'w') as f2:
         f2.write(template.render(pars)) 
     #Run Spruce TECO code 
-    host_data_resultDir = "/home/ecopad/ecopad%s" % (resultDir)
+    host_data_resultDir = "/home/ecopad/ecopad/data/static/ecopad_tasks/%s" % (task_id)
     docker_opts = "-v %s:/data " % (host_data_resultDir)
     docker_cmd = "%s %s %s %s %s" % ("/data/spruce_pars.txt","/source/input/SPRUCE_forcing.txt",
                                     "/source/input/SPRUCE_forcing.txt",
