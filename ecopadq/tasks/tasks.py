@@ -30,9 +30,17 @@ def teco_spruce_setup(pars):
     tmpl = os.path.join(os.path.dirname(__file__),'templates/spruce_pars.tmpl')
     with open(tmpl,'r') as f:
         template=Template(f.read())
-    with open(os.path.join(resultDir,'spruce_pars.txt'),'w') as f2:
+    params_file = os.path.join(resultDir,'spruce_pars.txt')
+    with open(params_file,'w') as f2:
         f2.write(template.render(pars)) 
-    return "http://%s/ecopad_tasks/%s" % (host,task_id)   
+    #Run Spruce TECO code 
+    host_data_resultDir = "/home/ecopad/ecopad%s" % (resultDir)
+    docker_opts = "-v %s:/data " % (host_data_resultDir)
+    docker_cmd = "%s %s %s %s %s" % ("/data/spruce_pars.txt","/source/input/SPRUCE_forcing.txt",
+                                    "/source/input/SPRUCE_forcing.txt",
+                                    "/data","0")
+    result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
+    return "http://%s/ecopad_tasks/%s" % (result['host'],result['task_id'])   
 
 def teco_spruce_run(pars,forcing,obs,output,MCMC):
     """ Run task compile teco_spruce fortran code
