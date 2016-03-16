@@ -37,7 +37,7 @@ def teco_spruce_model(pars,model_type="0"):
     host_data_resultDir = "/home/ecopad/ecopad/data/static/ecopad_tasks/%s" % (task_id)
     docker_opts = "-v %s:/data:z " % (host_data_resultDir)
     docker_cmd = "/source/teco_spruce %s %s %s %s %s" % ("/data/spruce_pars.txt","/source/input/SPRUCE_forcing.txt",
-                                    "/source/input/SPRUCE_forcing.txt",
+                                    "/source/input/SPRUCE_obs.txt",
                                     "/data",str(model_type))
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     return "http://%s/ecopad_tasks/%s" % (result['host'],result['task_id'])   
