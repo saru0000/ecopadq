@@ -47,7 +47,7 @@ def check_params(pars):
     for param in ["latitude","longitude","wsmax","wsmin","LAIMAX","LAIMIN","SapS","SLA","GLmax","GRmax","Gsmax",
                     "extkU","alpha","Tau_Leaf","Tau_Wood","Tau_Root","Tau_F","Tau_C","Tau_Micro","Tau_SlowSOM",
                     "gddonset","Rl0" ]:
-        if not "." in str(param):
+        if not "." in str(pars[param]):
             pars[param]="%s." % (str(pars[param]))
         else:
             pars[param]=str(pars[param]) 
