@@ -44,7 +44,7 @@ def teco_spruce_model(pars,model_type="0"):
 
 def check_params(pars):
     """ Check params and make floats."""
-    for param in ["latitude}","longitude","wsmax","wsmin","LAIMAX","LAIMIN","SapS","SLA","GLmax","GRmax","Gsmax",
+    for param in ["latitude","longitude","wsmax","wsmin","LAIMAX","LAIMIN","SapS","SLA","GLmax","GRmax","Gsmax",
                     "extkU","alpha","Tau_Leaf","Tau_Wood","Tau_Root","Tau_F","Tau_C","Tau_Micro","Tau_SlowSOM",
                     "gddonset","Rl0" ]:
         if not "." in str(param):
