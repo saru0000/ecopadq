@@ -18,10 +18,10 @@ def add(x, y):
     result = x + y
     return result
 @task()
-def teco_spruce_setup(pars):
+def teco_spruce_model(pars,model_type="0"):
     """ Setup task convert parameters from html portal
 	to file, and store the file in input folder.
-	Then call teco_spruce_run()
+	call teco_spruce_model.
     """
     task_id = str(teco_spruce_setup.request.id)
     resultDir = os.path.join(basedir, 'ecopad_tasks/', task_id)
@@ -32,21 +32,23 @@ def teco_spruce_setup(pars):
         template=Template(f.read())
     params_file = os.path.join(resultDir,'spruce_pars.txt')
     with open(params_file,'w') as f2:
-        f2.write(template.render(pars)) 
+        f2.write(template.render(check_params(pars))) 
     #Run Spruce TECO code 
     host_data_resultDir = "/home/ecopad/ecopad/data/static/ecopad_tasks/%s" % (task_id)
     docker_opts = "-v %s:/data:z " % (host_data_resultDir)
     docker_cmd = " %s %s %s %s %s" % ("/data/spruce_pars.txt","/source/input/SPRUCE_forcing.txt",
                                     "/source/input/SPRUCE_forcing.txt",
-                                    "/data","0")
+                                    "/data",str(model_type))
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     return "http://%s/ecopad_tasks/%s" % (result['host'],result['task_id'])   
 
-def teco_spruce_run(pars,forcing,obs,output,MCMC):
-    """ Run task compile teco_spruce fortran code
-	args: pars is parameters from portal
-	      forcing is climate forcing input
-	      obs is observation data for DA
-	      output is model output folder
-	      MCMC is flag for DA(1) or simulation(0)
-    """
+def check_params(pars):
+    """ Check params and make floats."""
+    for param in ["latitude}","longitude","wsmax","wsmin","LAIMAX","LAIMIN","SapS","SLA","GLmax","GRmax","Gsmax",
+                    "extkU","alpha","Tau_Leaf","Tau_Wood","Tau_Root","Tau_F","Tau_C","Tau_Micro","Tau_SlowSOM",
+                    "gddonset","Rl0" ]:
+        if not "." in str(param):
+            pars[param]="%s." % (str(pars[param]))
+        else:
+            pars[param]=str(pars[param]) 
+    return pars    
