@@ -23,7 +23,7 @@ def teco_spruce_model(pars,model_type="0"):
 	to file, and store the file in input folder.
 	call teco_spruce_model.
     """
-    task_id = str(teco_spruce_setup.request.id)
+    task_id = str(teco_spruce_model.request.id)
     resultDir = os.path.join(basedir, 'ecopad_tasks/', task_id)
     os.makedirs(resultDir)
     
