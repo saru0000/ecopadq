@@ -40,6 +40,10 @@ def teco_spruce_model(pars,model_type="0"):
                                     "/source/input/SPRUCE_obs.txt",
                                     "/data",str(model_type))
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
+    #Run R Plots
+    docker_opts = "-v %s:/usr/local/src/myscripts/graphoutput:z " % (host_data_resultDir)
+    docker_cmd = None
+    result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     return "http://%s/ecopad_tasks/%s" % (result['host'],result['task_id'])   
 
 def check_params(pars):
