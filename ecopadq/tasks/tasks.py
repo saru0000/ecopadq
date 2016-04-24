@@ -26,7 +26,7 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
 	to file, and store the file in input folder.
 	call teco_spruce_model.
     """
-    task_id = str(teco_spruce_model.request.id)
+    task_id = str(teco_spruce_simulation.request.id)
     resultDir = setup_result_directory(task_id)
     
     #tmpl = os.path.join(os.path.dirname(__file__),'templates/spruce_pars.tmpl')
