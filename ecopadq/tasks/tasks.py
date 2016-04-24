@@ -41,7 +41,7 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     docker_opts = "-v %s:/data:z " % (host_data_resultDir)
     docker_cmd = "/source/teco_spruce {0} {1} {2} {3} {4} {5}".format("/data/spruce_pars.txt","/source/input/SPRUCE_forcing.txt",
                                     "/source/input/SPRUCE_obs.txt",
-                                    "/data", "0", "/source/input/SPRUCE_da_pars.txt")
+                                    "/data", 0 , "/source/input/SPRUCE_da_pars.txt")
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     #Run R Plots
     docker_opts = "-v %s:/usr/local/src/myscripts/graphoutput:z " % (host_data_resultDir)
