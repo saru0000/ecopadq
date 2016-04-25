@@ -39,7 +39,7 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     #Run Spruce TECO code 
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
     docker_opts = "-v %s:/data:z " % (host_data_resultDir)
-    docker_cmd = "/source/teco_spruce {0} {1} {2} {3} {4} {5}".format("/data/spruce_pars.txt","/source/input/SPRUCE_forcing.txt",
+    docker_cmd = "{0} {1} {2} {3} {4} {5}".format("/data/spruce_pars.txt","/source/input/SPRUCE_forcing.txt",
                                     "/source/input/SPRUCE_obs.txt",
                                     "/data", 0 , "/source/input/SPRUCE_da_pars.txt")
     print (docker_cmd)
