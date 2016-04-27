@@ -62,7 +62,7 @@ def teco_spruce_data_assimilation(pars,da_params=None):
     if da_params:
         da_param_filename = create_template('spruce_da_pars',da_params,resultDir,check_params)
     else:
-        copyfile("{0}/ecopad_tasks/default/SPRUCE_da_pars.txt".format(basedir),resultDir)
+        copyfile("{0}/ecopad_tasks/default/SPRUCE_da_pars.txt".format(basedir),"{0}/SPRUCE_da_pars.txt".format(resultDir))
         da_param_filename ="SPRUCE_da_pars.txt"
     #Run Spruce TECO code
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
