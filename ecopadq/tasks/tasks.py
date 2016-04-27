@@ -42,7 +42,7 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     docker_opts = "-v {0}/graphoutput:/usr/local/src/myscripts/graphoutput:z ".format(host_data_resultDir)
     docker_cmd = None
     result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
-    return "http://%s/ecopad_tasks/%s" % (result['host'],result['task_id']) 
+    return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id']) 
   
 @task()
 def teco_spruce_data_assimilation(pars,da_params=None):
@@ -65,6 +65,8 @@ def teco_spruce_data_assimilation(pars,da_params=None):
                                     "/source/input/SPRUCE_obs.txt",
                                     "/data",1, "/data/{0}".format(da_param_filename))
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
+
+    return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
     #Run R Plots
 
 @task()
@@ -98,7 +100,8 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,da_params=None,temperat
                                     temperature_treatment,co2_treatment)
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     #Run R Plots
-
+    
+    return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
 
 def create_template(tmpl_name,params,resultDir,check_function):
     tmpl = os.path.join(os.path.dirname(__file__),'templates/{0}.tmpl'.format(tmpl_name))
