@@ -28,13 +28,7 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     """
     task_id = str(teco_spruce_simulation.request.id)
     resultDir = setup_result_directory(task_id)
-    
-    #tmpl = os.path.join(os.path.dirname(__file__),'templates/spruce_pars.tmpl')
-    #with open(tmpl,'r') as f:
-    #    template=Template(f.read())
-    #params_file = os.path.join(resultDir,'spruce_pars.txt')
-    #with open(params_file,'w') as f2:
-    #    f2.write(template.render(check_params(pars))) 
+    #create param file 
     param_filename = create_template('spruce_pars',pars,resultDir,check_params)
     #Run Spruce TECO code 
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
@@ -42,10 +36,10 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     docker_cmd = "{0} {1} {2} {3} {4} {5}".format("/data/spruce_pars.txt","/source/input/SPRUCE_forcing.txt",
                                     "/source/input/SPRUCE_obs.txt",
                                     "/data", 0 , "/source/input/SPRUCE_da_pars.txt")
-    print (docker_cmd)
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     #Run R Plots
-    docker_opts = "-v %s:/usr/local/src/myscripts/graphoutput:z " % (host_data_resultDir)
+    os.makedirs("{0}/graphoutput".format(host_data_resultDir)) #make plot directory
+    docker_opts = "-v {0}/graphoutput:/usr/local/src/myscripts/graphoutput:z ".format(host_data_resultDir)
     docker_cmd = None
     result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     return "http://%s/ecopad_tasks/%s" % (result['host'],result['task_id']) 
@@ -78,17 +72,21 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,da_params=None,temperat
     """
         Forecasting 
     """
-    task_id = str(teco_spruce_data_assimilation.request.id)
+    task_id = str(teco_spruce_forecast.request.id)
     resultDir = setup_result_directory(task_id)
     param_filename = create_template('spruce_pars',pars,resultDir,check_params)
-    #da_param_filename = create_template('spruce_da_pars',da_params,resultDir,check_params)
+    #Set Param estimation file from DA 
     if not da_task_id:
         da_task_id = "default"
-    copyfile("{0}/ecopad_tasks/{1}/Paraest.txt".format(basedir,da_task_id),resultDir)
+    try:
+        copyfile("{0}/ecopad_tasks/{1}/Paraest.txt".format(basedir,da_task_id),"{0}/Paraest.txt".format(resultDir))
+    except:
+        raise("Parameter Estimation file location problem. {0} file not found.".format("{0}/ecopad_tasks/{1}/Paraest.txt".format(basedir,da_task_id)))
+    #Check for SPRUCE_da_pars
     if da_params:
         da_param_filename = create_template('spruce_da_pars',da_params,resultDir,check_params)
     else:
-        copyfile("{0}/ecopad_tasks/default/SPRUCE_da_pars.txt".format(basedir),resultDir)
+        copyfile("{0}/ecopad_tasks/default/SPRUCE_da_pars.txt".format(basedir),"{0}/SPRUCE_da_pars.txt".format(resultDir))
         da_param_filename ="SPRUCE_da_pars.txt"
     #Run Spruce TECO code
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
