@@ -67,9 +67,9 @@ def teco_spruce_data_assimilation(pars,da_params=None):
     #Run Spruce TECO code
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
     docker_opts = "-v %s:/data:z " % (host_data_resultDir)
-    docker_cmd = "/source/teco_spruce {0} {1} {2} {3} {4} {5}".format("/data/{0}".format(param_filename),"/source/input/SPRUCE_forcing.txt",
+    docker_cmd = "{0} {1} {2} {3} {4} {5}".format("/data/{0}".format(param_filename),"/source/input/SPRUCE_forcing.txt",
                                     "/source/input/SPRUCE_obs.txt",
-                                    "/data", "1", "/data/{0}".format(da_param_filename))
+                                    "/data",1, "/data/{0}".format(da_param_filename))
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     #Run R Plots
 
@@ -93,9 +93,9 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,da_params=None,temperat
     #Run Spruce TECO code
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
     docker_opts = "-v %s:/data:z " % (host_data_resultDir)
-    docker_cmd = "/source/teco_spruce {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format("/data/{0}".format(param_filename),
+    docker_cmd = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format("/data/{0}".format(param_filename),
                                     "/source/input/SPRUCE_forcing.txt", "/source/input/SPRUCE_obs.txt",
-                                    "/data", "2", "/data/{0}".format(da_param_filename),
+                                    "/data",2, "/data/{0}".format(da_param_filename),
                                     "/source/input/Weathergenerate",forecast_year, forecast_day,
                                     temperature_treatment,co2_treatment)
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
