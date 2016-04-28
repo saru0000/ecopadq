@@ -38,8 +38,8 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
                                     "/data", 0 , "/source/input/SPRUCE_da_pars.txt")
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     #Run R Plots
-    os.makedirs("{0}/graphoutput".format(host_data_resultDir)) #make plot directory
-    docker_opts = "-v {0}/graphoutput:/usr/local/src/myscripts/graphoutput:z ".format(host_data_resultDir)
+    #os.makedirs("{0}/graphoutput".format(host_data_resultDir)) #make plot directory
+    docker_opts = "-v {0}:/usr/local/src/myscripts/graphoutput:z ".format(host_data_resultDir)
     docker_cmd = None
     result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id']) 
