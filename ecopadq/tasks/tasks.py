@@ -48,6 +48,9 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
 def teco_spruce_data_assimilation(pars,da_params=None):
     """
         DA TECO Spruce
+        args: pars - Initial parameters for TECO SPRUCE
+        kwargs: da_params - Which DA variable and min and max range for 18 variables
+
     """
     task_id = str(teco_spruce_data_assimilation.request.id)
     resultDir = setup_result_directory(task_id)
@@ -65,14 +68,19 @@ def teco_spruce_data_assimilation(pars,da_params=None):
                                     "/source/input/SPRUCE_obs.txt",
                                     "/data",1, "/data/{0}".format(da_param_filename))
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
-
-    return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
     #Run R Plots
+    docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
+    docker_cmd ="Rscript ECOPAD_da_viz.R {0} {1}".format("/data/Paraest.txt","/data")
+    result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
+    #docker run -d -v /home/ecopad/ecopad/data/static/ecopad_tasks/a907134d-7f46-4a66-af71-ceb3291b2ba9:/data ecopad_r Rscript ECOPAD_da_viz.R /data/Paraest.txt /data
+    return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
 
 @task()
 def teco_spruce_forecast(pars,forecast_year,forecast_day,da_params=None,temperature_treatment=0.0,co2_treatment=380.0,da_task_id=None):
     """
         Forecasting 
+        args: pars - Initial parameters for TECO SPRUCE
+              forecast_year,forecast_day
     """
     task_id = str(teco_spruce_forecast.request.id)
     resultDir = setup_result_directory(task_id)
@@ -92,7 +100,7 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,da_params=None,temperat
         da_param_filename ="SPRUCE_da_pars.txt"
     #Run Spruce TECO code
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
-    docker_opts = "-v %s:/data:z " % (host_data_resultDir)
+    docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
     docker_cmd = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format("/data/{0}".format(param_filename),
                                     "/source/input/SPRUCE_forcing.txt", "/source/input/SPRUCE_obs.txt",
                                     "/data",2, "/data/{0}".format(da_param_filename),
@@ -100,7 +108,10 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,da_params=None,temperat
                                     temperature_treatment,co2_treatment)
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     #Run R Plots
-    
+    #docker run -d -v /home/ecopad/ecopad/data/static/ecopad_tasks/87caf4f6-eb8e-4da5-81ed-fe05a56f7d24:/data ecopad_r Rscript ECOPAD_forecast_viz.R obs_file/SPRUCE_obs.txt /data /data 100
+    docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
+    docker_cmd ="Rscript ECOPAD_forecast_viz.R {0} {1} {2} {3} {4}".format("obs_file/SPRUCE_obs.txt","/data","/data",100)
+    result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
 
 def create_template(tmpl_name,params,resultDir,check_function):
