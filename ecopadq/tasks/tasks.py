@@ -110,7 +110,7 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,da_params=None,temperat
     #Run R Plots
     #docker run -d -v /home/ecopad/ecopad/data/static/ecopad_tasks/87caf4f6-eb8e-4da5-81ed-fe05a56f7d24:/data ecopad_r Rscript ECOPAD_forecast_viz.R obs_file/SPRUCE_obs.txt /data /data 100
     docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
-    docker_cmd ="Rscript ECOPAD_forecast_viz.R {0} {1} {2} {3} {4}".format("obs_file/SPRUCE_obs.txt","/data","/data",100)
+    docker_cmd ="Rscript ECOPAD_forecast_viz.R {0} {1} {2} {3}".format("obs_file/SPRUCE_obs.txt","/data","/data",100)
     result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
 
