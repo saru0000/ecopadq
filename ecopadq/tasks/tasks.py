@@ -29,7 +29,7 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     task_id = str(teco_spruce_simulation.request.id)
     resultDir = setup_result_directory(task_id)
     #create param file 
-    param_filename = create_template('spruce_pars',pars,resultDir,check_params)
+    param_filename = create_template('SPRUCE_pars',pars,resultDir,check_params)
     #Run Spruce TECO code 
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
     docker_opts = "-v %s:/data:z " % (host_data_resultDir)
@@ -55,12 +55,13 @@ def teco_spruce_data_assimilation(pars,da_params=None):
     task_id = str(teco_spruce_data_assimilation.request.id)
     resultDir = setup_result_directory(task_id)
     #parm template file
-    param_filename = create_template('spruce_pars',pars,resultDir,check_params)
-    if da_params:
-        da_param_filename = create_template('spruce_da_pars',da_params,resultDir,check_params)
-    else:
-        copyfile("{0}/ecopad_tasks/default/SPRUCE_da_pars.txt".format(basedir),"{0}/SPRUCE_da_pars.txt".format(resultDir))
-        da_param_filename ="SPRUCE_da_pars.txt"
+    param_filename = create_template('SPRUCE_pars',pars,resultDir,check_params)
+    da_param_filename = create_template('SPRUCE_da_pars',da_params,resultDir,check_params)
+    #if da_params:
+    #    da_param_filename = create_template('spruce_da_pars',da_params,resultDir,check_params)
+    #else:
+    #    copyfile("{0}/ecopad_tasks/default/SPRUCE_da_pars.txt".format(basedir),"{0}/SPRUCE_da_pars.txt".format(resultDir))
+    #    da_param_filename ="SPRUCE_da_pars.txt"
     #Run Spruce TECO code
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
     docker_opts = "-v %s:/data:z " % (host_data_resultDir)
@@ -84,7 +85,8 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,da_params=None,temperat
     """
     task_id = str(teco_spruce_forecast.request.id)
     resultDir = setup_result_directory(task_id)
-    param_filename = create_template('spruce_pars',pars,resultDir,check_params)
+    param_filename = create_template('SPRUCE_pars',pars,resultDir,check_params)
+    da_param_filename = create_template('SPRUCE_da_pars',da_params,resultDir,check_params)
     #Set Param estimation file from DA 
     if not da_task_id:
         da_task_id = "default"
@@ -92,12 +94,13 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,da_params=None,temperat
         copyfile("{0}/ecopad_tasks/{1}/Paraest.txt".format(basedir,da_task_id),"{0}/Paraest.txt".format(resultDir))
     except:
         raise("Parameter Estimation file location problem. {0} file not found.".format("{0}/ecopad_tasks/{1}/Paraest.txt".format(basedir,da_task_id)))
-    #Check for SPRUCE_da_pars
-    if da_params:
-        da_param_filename = create_template('spruce_da_pars',da_params,resultDir,check_params)
-    else:
-        copyfile("{0}/ecopad_tasks/default/SPRUCE_da_pars.txt".format(basedir),"{0}/SPRUCE_da_pars.txt".format(resultDir))
-        da_param_filename ="SPRUCE_da_pars.txt"
+    #SPRUCE_da_pars
+    #da_param_filename = create_template('SPRUCE_da_pars',da_params,resultDir,check_params)
+    #if da_params:
+    #    da_param_filename = create_template('SPRUCE_da_pars',da_params,resultDir,check_params)
+    #else:
+    #    copyfile("{0}/ecopad_tasks/default/SPRUCE_da_pars.txt".format(basedir),"{0}/SPRUCE_da_pars.txt".format(resultDir))
+    #    da_param_filename ="SPRUCE_da_pars.txt"
     #Run Spruce TECO code
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
     docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
@@ -133,8 +136,22 @@ def check_params(pars):
     for param in ["latitude","longitude","wsmax","wsmin","LAIMAX","LAIMIN","SapS","SLA","GLmax","GRmax","Gsmax",
                     "extkU","alpha","Tau_Leaf","Tau_Wood","Tau_Root","Tau_F","Tau_C","Tau_Micro","Tau_SlowSOM",
                     "gddonset","Rl0" ]:
-        if not "." in str(pars[param]):
+        try:
+            inside_check(pars,param)
+        except:
+            pass
+        try:
+            inside_check(pars, "min_{0}".format(param))
+        except:
+            pass
+        try:
+            inside_check(pars, "max_{0}".format(param))
+        except:
+            pass
+    return pars  
+
+def inside_check(pars,param):
+    if not "." in str(pars[param]):
             pars[param]="%s." % (str(pars[param]))
         else:
-            pars[param]=str(pars[param]) 
-    return pars    
+            pars[param]=str(pars[param])  
