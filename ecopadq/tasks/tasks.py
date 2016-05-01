@@ -150,6 +150,6 @@ def check_params(pars):
 
 def inside_check(pars,param):
     if not "." in str(pars[param]):
-            pars[param]="%s." % (str(pars[param]))
-        else:
-            pars[param]=str(pars[param])  
+        pars[param]="%s." % (str(pars[param]))
+    else:
+        pars[param]=str(pars[param])  
