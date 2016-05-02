@@ -57,8 +57,8 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
 
     report = create_report('report',report_data,resultDir)
     result_url ="http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
-    report_url = "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],"report.html")
-    return {"data":result_url,"report":report_url} 
+    report_url = "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],"report.htm")
+    return {"report":report_url,"data":result_url} 
   
 @task()
 def teco_spruce_data_assimilation(pars):
@@ -175,10 +175,10 @@ def create_report(tmpl_name,data,resultDir):
     tmpl = os.path.join(os.path.dirname(__file__),'templates/{0}.tmpl'.format(tmpl_name))
     with open(tmpl,'r') as f:
         template=Template(f.read())
-    report_file = os.path.join(resultDir,'{0}.html'.format(tmpl_name))
+    report_file = os.path.join(resultDir,'{0}.htm'.format(tmpl_name))
     with open(report_file,'w') as f2:
         f2.write(template.render(data))
-    return '{0}.html'.format(tmpl_name)
+    return '{0}.htm'.format(tmpl_name)
 
 def setup_result_directory(task_id):
     resultDir = os.path.join(basedir, 'ecopad_tasks/', task_id)
