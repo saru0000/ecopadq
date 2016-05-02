@@ -55,7 +55,7 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     report_data['title']="SPRUCE Ecological Simulation Task Report"
     report_data['description']="Simulations of carbon fluxes and pool sizes for SPRUCE experiment based on user defined initial parameters."
 
-    report = create_report('report',report_data)
+    report = create_report('report',report_data,resultDir)
     return {"data":"http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id']),
             "report": "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],report)} 
   
@@ -144,7 +144,7 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     desc = desc + "Forcing inputs are genereated by auto-regression model using historical climate data of the SPRUCE site. "
     desc = desc + "Allow users to choose which year and day to make predictations of ecosystem in response to treatment effects."
     report_data['description']=desc
-    report = create_report('report',report_data)
+    report = create_report('report',report_data,resultDir)
     return {"data":"http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id']),
             "report": "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],report)}
 
@@ -170,7 +170,7 @@ def create_template(tmpl_name,params,resultDir,check_function):
         f2.write(template.render(check_function(params)))
     return '{0}.txt'.format(tmpl_name)
 
-def create_report(tmpl_name,data):
+def create_report(tmpl_name,data,resultDir):
     tmpl = os.path.join(os.path.dirname(__file__),'templates/{0}.tmpl'.format(tmpl_name))
     with open(tmpl,'r') as f:
         template=Template(f.read())
