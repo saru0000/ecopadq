@@ -3,6 +3,7 @@ from dockertask import docker_task
 from subprocess import call,STDOUT
 from jinja2 import Template
 from shutil import copyfile, move
+from glob import glob
 import requests,os
 
 #Default base directory 
@@ -150,7 +151,7 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
 def clean_up(resultDir):
     move("{0}/SPRUCE_pars.txt".format(resultDir),"{0}/input/SPRUCE_pars.txt".format(resultDir))
     move("{0}/SPRUCE_yearly.txt".format(resultDir),"{0}/output/SPRUCE_yearly.txt".format(resultDir))
-    for mvfile in glob("{0}/Simu_dailyflux*.txt".format(resultDir):
+    for mvfile in glob("{0}/Simu_dailyflux*.txt".format(resultDir)):
         move(mvfile, "{0}/output".format(resultDir))
     for mvfile in glob("{0}/*.png".format(resultDir):
         move(mvfile, "{0}/plot".format(resultDir))
