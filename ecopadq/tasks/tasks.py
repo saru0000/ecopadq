@@ -57,8 +57,9 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
 
     report = create_report('report',report_data,resultDir)
     result_url ="http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
-    report_url = "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],"report.htm")
-    return {"report":report_url,"data":result_url} 
+    #report_url = "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],"report.htm")
+    #{"report":report_url,"data":result_url}
+    return result_url
   
 @task()
 def teco_spruce_data_assimilation(pars):
@@ -89,6 +90,22 @@ def teco_spruce_data_assimilation(pars):
     docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
     docker_cmd ="Rscript ECOPAD_da_viz.R {0} {1}".format("/data/Paraest.txt","/data")
     result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
+    #Clean up result Directory
+    clean_up(resultDir)
+    #Create Report
+    report_data ={'zero_label':'Results','zero_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'histogram.png')}
+    report_data['title']="SPRUCE Ecological Data Assimilation Task Report"
+    desc= "Multiple data streams from SPRUCE are assimilated to TECO model using MCMC algorithm. "\
+            "The current dataset are mainly from pre-treatment measurement from 2011 to 2014. "\
+            "This will be updated regularly when new data stream is available. 5 out of 18 parameters are constrained from pre-treatment data. "\
+            "The 18 parameters are (1) turnover rate of foliage pool, (2) turnover rate of woody pool, (3) turnover rate of root pool, "\
+            "(4) turnover rate of fine litter pool, (5) turnover rate of coarse litter pool, (6) turnover rate of fast soil pool, "\
+            "(7) turnover rate of slow soil pool, (8) turnover rate of passive soil pool, (9) maximum leaf growth rate, "\
+            "(10) maximum root growth rate, (11) maximum stem growth rate, (12) maximum rate of carboxylation, (13) baseline leaf respiration, "\
+            "(14) baseline stem respiration, (15) baseline root respiration, (16) temperature sensitivity Q10, (17) specific leaf area, "\
+            "(18) onset of growing degree days"
+    report_data['description']=desc
+    report_name = create_report('report_da',report_data,resultDir)
     return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
 
 @task()
@@ -146,8 +163,9 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     desc = desc + "Allow users to choose which year and day to make predictations of ecosystem in response to treatment effects."
     report_data['description']=desc
     report_name = create_report('report',report_data,resultDir)
-    return {"data":"http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id']),
-            "report": "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],report_name)}
+    #return {"data":"http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id']),
+    #        "report": "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],report_name)}
+    return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
 
 def clean_up(resultDir):
     move("{0}/SPRUCE_pars.txt".format(resultDir),"{0}/input/SPRUCE_pars.txt".format(resultDir))
