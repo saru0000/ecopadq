@@ -153,7 +153,7 @@ def clean_up(resultDir):
     move("{0}/SPRUCE_yearly.txt".format(resultDir),"{0}/output/SPRUCE_yearly.txt".format(resultDir))
     for mvfile in glob("{0}/Simu_dailyflux*.txt".format(resultDir)):
         move(mvfile, "{0}/output".format(resultDir))
-    for mvfile in glob("{0}/*.png".format(resultDir):
+    for mvfile in glob("{0}/*.png".format(resultDir)):
         move(mvfile, "{0}/plot".format(resultDir))
     try:
         move("{0}/SPRUCE_da_pars.txt".format(resultDir),"{0}/input/SPRUCE_da_pars.txt".format(resultDir))
