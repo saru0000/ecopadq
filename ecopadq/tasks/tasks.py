@@ -119,6 +119,7 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     resultDir = setup_result_directory(task_id)
     param_filename = create_template('SPRUCE_pars',pars,resultDir,check_params)
     #da_param_filename = create_template('SPRUCE_da_pars',pars,resultDir,check_params)
+    da_param_filename ="SPRUCE_da_pars.txt"
     #Set Param estimation file from DA 
     if not da_task_id:
         da_task_id = "default"
