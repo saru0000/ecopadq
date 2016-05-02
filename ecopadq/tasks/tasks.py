@@ -56,8 +56,8 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     report_data['description']="Simulations of carbon fluxes and pool sizes for SPRUCE experiment based on user defined initial parameters."
 
     report = create_report('report',report_data,resultDir)
-    return {"data":"http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id']),
-            "report": "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],report)} 
+    result_url ="http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
+    return {"data":report_url,"report": "{0}/{1}".format(result_url,'report.html')} 
   
 @task()
 def teco_spruce_data_assimilation(pars):
@@ -144,9 +144,9 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     desc = desc + "Forcing inputs are genereated by auto-regression model using historical climate data of the SPRUCE site. "
     desc = desc + "Allow users to choose which year and day to make predictations of ecosystem in response to treatment effects."
     report_data['description']=desc
-    report = create_report('report',report_data,resultDir)
+    report_name = create_report('report',report_data,resultDir)
     return {"data":"http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id']),
-            "report": "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],report)}
+            "report": "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],report_name)}
 
 def clean_up(resultDir):
     move("{0}/SPRUCE_pars.txt".format(resultDir),"{0}/input/SPRUCE_pars.txt".format(resultDir))
