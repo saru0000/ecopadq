@@ -57,7 +57,7 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
 
     report = create_report('report',report_data,resultDir)
     result_url ="http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
-    return {"data":report_url,"report": "{0}/{1}".format(result_url,'report.html')} 
+    return {"data":result_url,"report": "{0}/{1}".format(result_url,'report.html')} 
   
 @task()
 def teco_spruce_data_assimilation(pars):
