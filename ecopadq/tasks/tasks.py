@@ -46,12 +46,12 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     #Clean up result Directory
     clean_up(resultDir)
     #Create Report
-    report_data ={'zero_label':'GPP','zero_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'gpp.png'),
-                'one_label':'ER','one_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'er.png'),
-                'two_label':'Foliage','two_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'foliage.png'),
-                'three_label':'Wood','three_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'wood.png'),
-                'four_label':'Root','four_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'root.png'),
-                'five_label':'Soil','five_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'soil.png')}
+    report_data ={'zero_label':'GPP','zero_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'gpp.png'),
+                'one_label':'ER','one_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'er.png'),
+                'two_label':'Foliage','two_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'foliage.png'),
+                'three_label':'Wood','three_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'wood.png'),
+                'four_label':'Root','four_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'root.png'),
+                'five_label':'Soil','five_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'soil.png')}
     report_data['title']="SPRUCE Ecological Simulation Task Report"
     report_data['description']="Simulations of carbon fluxes and pool sizes for SPRUCE experiment based on user defined initial parameters."
 
@@ -133,12 +133,12 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     #Clean up result Directory
     clean_up(resultDir)
     #Create Report
-    report_data ={'zero_label':'GPP Forecast','zero_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'gpp_forecast.png'),
-                'one_label':'ER Forecast','one_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'er_forecast.png'),
-                'two_label':'Foliage Forecast','two_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'foliage_forecast.png'),
-                'three_label':'Wood Forecast','three_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'wood_forecast.png'),
-                'four_label':'Root Forecast','four_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'root_forecast.png'),
-                'five_label':'Soil Forecast','five_url':'/ecopad_tasks/{1}/plot/{2}'.format(task_id,'soil_forecast.png')}
+    report_data ={'zero_label':'GPP Forecast','zero_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'gpp_forecast.png'),
+                'one_label':'ER Forecast','one_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'er_forecast.png'),
+                'two_label':'Foliage Forecast','two_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'foliage_forecast.png'),
+                'three_label':'Wood Forecast','three_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'wood_forecast.png'),
+                'four_label':'Root Forecast','four_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'root_forecast.png'),
+                'five_label':'Soil Forecast','five_url':'/ecopad_tasks/{0}/plot/{1}'.format(task_id,'soil_forecast.png')}
     report_data['title']="SPRUCE Ecological Forecast Task Report"
     desc = "Use constrained parameters from Data Assimilation to predict carbon fluxes and pool sizes. "
     desc = desc + "Forcing inputs are genereated by auto-regression model using historical climate data of the SPRUCE site. "
