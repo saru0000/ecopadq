@@ -98,12 +98,13 @@ def teco_spruce_data_assimilation(pars):
     desc= "Multiple data streams from SPRUCE are assimilated to TECO model using MCMC algorithm. "\
             "The current dataset are mainly from pre-treatment measurement from 2011 to 2014. "\
             "This will be updated regularly when new data stream is available. 5 out of 18 parameters are constrained from pre-treatment data. "\
-            "The 18 parameters are (1) turnover rate of foliage pool, (2) turnover rate of woody pool, (3) turnover rate of root pool, "\
-            "(4) turnover rate of fine litter pool, (5) turnover rate of coarse litter pool, (6) turnover rate of fast soil pool, "\
-            "(7) turnover rate of slow soil pool, (8) turnover rate of passive soil pool, (9) maximum leaf growth rate, "\
-            "(10) maximum root growth rate, (11) maximum stem growth rate, (12) maximum rate of carboxylation, (13) baseline leaf respiration, "\
-            "(14) baseline stem respiration, (15) baseline root respiration, (16) temperature sensitivity Q10, (17) specific leaf area, "\
-            "(18) onset of growing degree days"
+            "The 18 parameters are (1) specific leaf area, (2) maximum leaf growth rate, (3) maximum root growth rate, "\
+            "(4) maximum stem growth rate, (5) maximum rate of carboxylation, (6) turnover rate of foliage pool, "\
+            "(7) turnover rate of woody pool, (8) turnover rate of root pool, (9) turnover rate of fine litter pool, "\
+            "(10) turnover rate of coarse litter pool, (11) turnover rate of fast soil pool, (12) turnover rate of slow soil pool, "\
+            "(13) turnover rate of passive soil pool, (14) onset of growing degree days, (15) temperature sensitivity Q10, "\
+            "(16) baseline leaf respiration, (17) baseline stem respiration, (18) baseline root respiration"
+        
     report_data['description']=desc
     report_name = create_report('report_da',report_data,resultDir)
     return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
