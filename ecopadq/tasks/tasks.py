@@ -128,14 +128,14 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
             copyfile("{0}/ecopad_tasks/{1}/SPRUCE_da_pars.txt".format(basedir,da_task_id),"{0}/SPRUCE_da_pars.txt".format(resultDir))
         except:
             error_file = "{0}/ecopad_tasks/{1}/Paraest.txt or SPRUCE_da_pars.txt".format(basedir,da_task_id)
-            raise("Parameter Estimation file location problem. {0} file not found.".format(error_file))
+            raise Exception("Parameter Estimation file location problem. {0} file not found.".format(error_file))
     else:
         try:
             copyfile("{0}/ecopad_tasks/{1}/input/Paraest.txt".format(basedir,da_task_id),"{0}/Paraest.txt".format(resultDir))
             copyfile("{0}/ecopad_tasks/{1}/input/SPRUCE_da_pars.txt".format(basedir,da_task_id),"{0}/SPRUCE_da_pars.txt".format(resultDir))
         except:
             error_file = "{0}/ecopad_tasks/{1}/input/Paraest.txt or SPRUCE_da_pars.txt".format(basedir,da_task_id)
-            raise("Parameter Estimation file location problem. {0} file not found.".format(error_file))
+            raise Exception("Parameter Estimation file location problem. {0} file not found.".format(error_file))
     #Run Spruce TECO code
     host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
     docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
