@@ -21,6 +21,15 @@ def add(x, y):
     """
     result = x + y
     return result
+#New Example task
+@task()
+def sub(a, b):
+    """ Example task that subtracts two numbers or strings
+        args: x and y
+        return substraction of strings
+    """
+    result1 = a - b
+    return result1
 @task()
 def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     """ Setup task convert parameters from html portal
