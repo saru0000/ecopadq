@@ -1,13 +1,12 @@
+from celery.task import task
+import pandas as pd
+from datetime import datetime
+from ftplib import FTP
+import urllib, shutil
+from config import ftp_username, ftp_password
+@task()
 def teco_spruce_pulldata():
-    import pandas as pd
-    from datetime import datetime
-    #from datetime import date_time
-    #Get from ftp site
-    from ftplib import FTP
-    import urllib, shutil
-    from config import ftp_username, ftp_password
-   
-    
+  
     #pulling data from the url
     
     url = 'ftp://{0}:{1}@sprucedata.ornl.gov/DataFiles/EM1_Table1.dat'.format(ftp_username,ftp_password)
