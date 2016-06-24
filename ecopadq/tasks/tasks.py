@@ -9,7 +9,7 @@ import requests,os
 #Default base directory 
 basedir="/data/static/"
 host= 'ecolab.cybercommons.org'
-host_data_dir = "/home/ecopad/ecopad/data/static"
+host_data_dir = os.environ.get("host_data_dir","/home/ecopad/ecopad/data/static")
 
 
 #Example task
