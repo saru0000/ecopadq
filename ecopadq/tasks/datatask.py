@@ -5,8 +5,8 @@ from ftplib import FTP
 import urllib, shutil
 from config import ftp_username, ftp_password
 @task()
-def teco_spruce_pulldata(initial_text="initial.txt",destination=''):
-  
+def teco_spruce_pulldata(destination='/data/local/spruce_data'):
+    initial_text=open("{0}/initial.txt".format(destination),"r")
     #pulling data from the url
     
     url = 'ftp://{0}:{1}@sprucedata.ornl.gov/DataFiles/EM1_Table1.dat'.format(ftp_username,ftp_password)
@@ -56,12 +56,12 @@ def teco_spruce_pulldata(initial_text="initial.txt",destination=''):
     
     #file which contain the new data
     #j2=pd.read_csv('teco_spruce.txt','\t')
-    
+    print "I found you############################################################3"
     #joining both the files together and removing the duplicate rows
     j3=pd.concat([j1,teco_spruce1]).drop_duplicates().reset_index(drop=True)
     
     #writing it to a file
-    j3.to_csv('{0}final.txt'.format(destination),'\t',index=False)    
+    j3.to_csv('{0}/SPRUCE_forcing.txt'.format(destination),'\t',index=False)    
 
 #teco_spruce_pulldata()
     
