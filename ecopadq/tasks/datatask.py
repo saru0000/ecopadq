@@ -3,6 +3,8 @@ import pandas as pd
 from datetime import datetime
 from ftplib import FTP
 import urllib, shutil
+import sys
+sys.path.append('/code/task_config')
 from config import ftp_username, ftp_password
 @task()
 def teco_spruce_pulldata(destination='/data/local/spruce_data'):
