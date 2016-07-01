@@ -9,9 +9,10 @@ import requests,os
 #Default base directory 
 basedir="/data/static/"
 host= 'ecolab.cybercommons.org'
-host_data_dir = "/home/ecopad/ecopad/data/static"
+host_data_dir = os.environ["host_data_dir"] 
+# "/home/ecopad/ecopad/data/static"
 
-
+#print "hello-world"
 #Example task
 @task()
 def add(x, y):
@@ -41,11 +42,12 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     #create param file 
     param_filename = create_template('SPRUCE_pars',pars,resultDir,check_params)
     #Run Spruce TECO code 
-    host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
-    docker_opts = "-v %s:/data:z " % (host_data_resultDir)
-    docker_cmd = "{0} {1} {2} {3} {4} {5}".format("/data/{0}".format(param_filename),"/source/input/SPRUCE_forcing.txt",
-                                    "/source/input/SPRUCE_obs.txt",
-                                    "/data", 0 , "/source/input/SPRUCE_da_pars.txt")
+    host_data_resultDir = "{0}/static/ecopad_tasks/{1}".format(host_data_dir,task_id)
+    host_data_dir_spruce_data="{0}/local/spruce_data".format(host_data_dir)	
+    docker_opts = "-v {0}:/data:z -v {1}:/spruce_data:z".format(host_data_resultDir,host_data_dir_spruce_data)
+    docker_cmd = "{0} {1} {2} {3} {4} {5}".format("/data/{0}".format(param_filename),"/spruce_data/SPRUCE_forcing.txt",
+                                    "/spruce_data/SPRUCE_obs.txt",
+                                    "/data", 0 , "/spruce_data/SPRUCE_da_pars.txt")
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     #Run R Plots
     #os.makedirs("{0}/graphoutput".format(host_data_resultDir)) #make plot directory
@@ -89,10 +91,11 @@ def teco_spruce_data_assimilation(pars):
     #    copyfile("{0}/ecopad_tasks/default/SPRUCE_da_pars.txt".format(basedir),"{0}/SPRUCE_da_pars.txt".format(resultDir))
     #    da_param_filename ="SPRUCE_da_pars.txt"
     #Run Spruce TECO code
-    host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
-    docker_opts = "-v %s:/data:z " % (host_data_resultDir)
-    docker_cmd = "{0} {1} {2} {3} {4} {5}".format("/data/{0}".format(param_filename),"/source/input/SPRUCE_forcing.txt",
-                                    "/source/input/SPRUCE_obs.txt",
+    host_data_resultDir = "{0}/static/ecopad_tasks/{1}".format(host_data_dir,task_id)
+    host_data_dir_spruce_data="{0}/local/spruce_data".format(host_data_dir)
+    docker_opts = "-v {0}:/data:z -v {1}:/spruce_data".format(host_data_resultDir,host_data_dir_spruce_data)
+    docker_cmd = "{0} {1} {2} {3} {4} {5}".format("/data/{0}".format(param_filename),"/spruce_data/SPRUCE_forcing.txt",
+                                    "/spruce_data/SPRUCE_obs.txt",
                                     "/data",1, "/data/{0}".format(da_param_filename))
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     #Run R Plots
@@ -130,6 +133,7 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     param_filename = create_template('SPRUCE_pars',pars,resultDir,check_params)
     #da_param_filename = create_template('SPRUCE_da_pars',pars,resultDir,check_params)
     da_param_filename ="SPRUCE_da_pars.txt"
+    host_data_dir_spruce_data="{0}/local/spruce_data".format(host_data_dir)
     #Set Param estimation file from DA 
     if not da_task_id:
         da_task_id = "default"
@@ -147,10 +151,11 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
             error_file = "{0}/ecopad_tasks/{1}/input/Paraest.txt or SPRUCE_da_pars.txt".format(basedir,da_task_id)
             raise Exception("Parameter Estimation file location problem. {0} file not found.".format(error_file))
     #Run Spruce TECO code
-    host_data_resultDir = "{0}/ecopad_tasks/{1}".format(host_data_dir,task_id)
-    docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
+    host_data_resultDir = "{0}/static/ecopad_tasks/{1}".format(host_data_dir,task_id)
+    host_data_dir_spruce_data="{0}/local/spruce_data".format(host_data_dir)
+    docker_opts = "-v {0}:/data:z -v {1}:/spruce_data".format(host_data_resultDir,host_data_dir_spruce_data)
     docker_cmd = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format("/data/{0}".format(param_filename),
-                                    "/source/input/SPRUCE_forcing.txt", "/source/input/SPRUCE_obs.txt",
+                                    "/spruce_data/SPRUCE_forcing.txt", "/spruce_data/SPRUCE_obs.txt",
                                     "/data",2, "/data/{0}".format(da_param_filename),
                                     "/source/input/Weathergenerate",forecast_year, forecast_day,
                                     temperature_treatment,co2_treatment)
