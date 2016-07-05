@@ -7,6 +7,10 @@ import sys
 sys.path.append('/code/task_config')
 from config import ftp_username, ftp_password
 @task()
+def example(temp):
+    return temp
+    
+@task()
 def teco_spruce_pulldata(destination='/data/local/spruce_data'):
     initial_text=open("{0}/initial.txt".format(destination),"r")
     #pulling data from the url
