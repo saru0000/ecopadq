@@ -3,7 +3,7 @@ EcoPAD Queue
 
 Ecopad task queue. Good starting repo for various asynchronous tasks. 
 
-After setting upthe system,check the docker containers that are running.
+After setting up the system,check the docker containers that are running.
 
       `# docker ps`
       
@@ -21,3 +21,6 @@ Everytime you make some changes in the system,don't forget to restart the system
       
       `#./cybercom_up`
       
+The ./docker_restart command kills all the docker containers and removes them from the system.
+
+The ./cybercom_up command runs the bash script cybercom_up.sh and creates the docker containers mongo,rabbitmq and links it with the celery container.Then it creates the api container and links the memcache,mongo and rabbitmq.Finally it creates the nginx container and links the api container with it.So all the containers is linked with one another.
