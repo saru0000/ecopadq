@@ -123,7 +123,7 @@ def teco_spruce_data_assimilation(pars):
     return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
 
 @task()
-def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0.0,co2_treatment=380.0,da_task_id=Nonei,public=None):
+def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0.0,co2_treatment=380.0,da_task_id=None,public=None):
     """
         Forecasting 
         args: pars - Initial parameters for TECO SPRUCE
