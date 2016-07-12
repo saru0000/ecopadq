@@ -119,7 +119,7 @@ def teco_spruce_pulldata(destination='/data/local/spruce_data'):
 	check_na_values(teco_spruce1)
 	print('I have finished checking the na values')
 	time_now=datetime.now()
-        time_now =time_now.strftime("%d_%m_%Y_%H_%M_%S")
+        time_now =time_now.strftime("%Y_%m_%d_%H_%M_%S")
         #writing it to a file
 	print('now I am writing to the file')
 	j3.to_csv('{0}/SPRUCE_forcing.txt'.format(destination),'\t',index=False) 
