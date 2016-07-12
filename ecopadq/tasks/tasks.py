@@ -185,7 +185,7 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     result_url = "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
     if public:
         data={'tag':public,'result_url':result_url,'task_id':task_id,'timestamp':datetime.now()}
-        db=MongoClient('ecopad_mongo',27107)
+        db=MongoClient('ecopad_mongo',27017)
         db.forecast.public.save(data)
 
     return result_url
