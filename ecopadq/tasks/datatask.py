@@ -8,7 +8,6 @@ from itertools import groupby
 from operator import itemgetter
 sys.path.append('/code/task_config')
 from config import ftp_username, ftp_password
-<<<<<<< HEAD
 #@task
 def check_na_values(teco_spruce1):
     if(teco_spruce1.isnull().values.any()):
@@ -58,14 +57,8 @@ def check_na_values(teco_spruce1):
             		#teco_spruce1.PAR.fillna(teco_spruce1.PAR.shift(24), inplace=True)
             		teco_spruce1.loc[a,('PAR')]=teco_spruce1.iloc[a-1]['PAR'] 
            
-@task
-=======
-@task()
-def example(temp):
-    return temp
     
 @task()
->>>>>>> 04502ae3419a1a7f2feb876598be6bb4f13815ce
 def teco_spruce_pulldata(destination='/data/local/spruce_data'):
     initial_text=open("{0}/initial.txt".format(destination),"r")
     #pulling data from the url
