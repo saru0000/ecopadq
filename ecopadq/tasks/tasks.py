@@ -5,7 +5,8 @@ from jinja2 import Template
 from shutil import copyfile, move
 from glob import glob
 import requests,os
-
+from pymongo import MongoClient
+from datetime import datetime
 #Default base directory 
 basedir="/data/static/"
 host= 'ecolab.cybercommons.org'
@@ -122,7 +123,7 @@ def teco_spruce_data_assimilation(pars):
     return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
 
 @task()
-def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0.0,co2_treatment=380.0,da_task_id=None):
+def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0.0,co2_treatment=380.0,da_task_id=Nonei,public=None):
     """
         Forecasting 
         args: pars - Initial parameters for TECO SPRUCE
@@ -181,7 +182,14 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     report_name = create_report('report',report_data,resultDir)
     #return {"data":"http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id']),
     #        "report": "http://{0}/ecopad_tasks/{1}/{2}".format(result['host'],result['task_id'],report_name)}
-    return "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
+    result_url = "http://{0}/ecopad_tasks/{1}".format(result['host'],result['task_id'])
+    if public:
+        data={'tag':public,'result_url':result_url,'task_id':task_id,'timestamp':datetime.now()}
+        db=MongoClient('ecopad_mongo',27107)
+        db.forecast.public.save(data)
+
+    return result_url
+
 
 def clean_up(resultDir):
     move("{0}/SPRUCE_pars.txt".format(resultDir),"{0}/input/SPRUCE_pars.txt".format(resultDir))
