@@ -157,7 +157,7 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     docker_cmd = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format("/data/{0}".format(param_filename),
                                     "/spruce_data/SPRUCE_forcing.txt", "/spruce_data/SPRUCE_obs.txt",
                                     "/data",2, "/data/{0}".format(da_param_filename),
-                                    "/source/input/Weathergenerate",forecast_year, forecast_day,
+                                    "/spruce_data/Weathergenerate",forecast_year, forecast_day,
                                     temperature_treatment,co2_treatment)
     result = docker_task(docker_name="teco_spruce",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
     #Run R Plots
