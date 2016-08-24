@@ -9,6 +9,7 @@ from pymongo import MongoClient
 from datetime import datetime
 #Default base directory 
 basedir="/data/static/"
+spruce_data_folder="/data/local/spruce_data"
 host= 'ecolab.cybercommons.org'
 host_data_dir = os.environ["host_data_dir"] 
 # "/home/ecopad/ecopad/data/static"
@@ -137,12 +138,11 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     host_data_dir_spruce_data="{0}/local/spruce_data".format(host_data_dir)
     #Set Param estimation file from DA 
     if not da_task_id:
-        da_task_id = "default"
         try:
-            copyfile("{0}/ecopad_tasks/{1}/Paraest.txt".format(basedir,da_task_id),"{0}/Paraest.txt".format(resultDir))
-            copyfile("{0}/ecopad_tasks/{1}/SPRUCE_da_pars.txt".format(basedir,da_task_id),"{0}/SPRUCE_da_pars.txt".format(resultDir))
+            copyfile("{0}/Paraest.txt".format(spruce_data_folder),"{0}/Paraest.txt".format(resultDir))
+            copyfile("{0}/SPRUCE_da_pars.txt".format(spruce_data_folder),"{0}/SPRUCE_da_pars.txt".format(resultDir))
         except:
-            error_file = "{0}/ecopad_tasks/{1}/Paraest.txt or SPRUCE_da_pars.txt".format(basedir,da_task_id)
+            error_file = "{0}/Paraest.txt or SPRUCE_da_pars.txt".format(spruce_data_folder)
             raise Exception("Parameter Estimation file location problem. {0} file not found.".format(error_file))
     else:
         try:
