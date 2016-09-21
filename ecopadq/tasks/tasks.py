@@ -15,15 +15,7 @@ host_data_dir = os.environ["host_data_dir"]
 # "/home/ecopad/ecopad/data/static"
 
 #print "hello-world"
-#Example task
-@task()
-def add(x, y):
-    """ Example task that adds two numbers or strings
-        args: x and y
-        return addition or concatination of strings
-    """
-    result = x + y
-    return result
+
 #New Example task
 @task()
 def sub(a, b):
@@ -33,6 +25,17 @@ def sub(a, b):
     """
     result1 = a - b
     return result1
+
+@task()
+def add(a, b):
+    """ Example task that add two numbers or strings
+        args: x and y
+        return substraction of strings
+    """
+    result1 = a + b
+    return result1
+
+
 @task()
 def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     """ Setup task convert parameters from html portal
@@ -56,6 +59,8 @@ def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
     docker_opts = "-v {0}:/usr/local/src/myscripts/graphoutput:z ".format(host_data_resultDir)
     docker_cmd = None
     result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
+   
+
     #Clean up result Directory
     clean_up(resultDir)
     #Create Report
@@ -165,6 +170,16 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
     docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
     docker_cmd ="Rscript ECOPAD_forecast_viz.R {0} {1} {2} {3}".format("obs_file/SPRUCE_obs.txt","/data","/data",100)
     result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
+    
+    # Yuanyuan add to reformat output data
+    docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
+    docker_cmd = "Rscript reformat_to_csv.R {0} {1} {2} {3} {4}".format("/data","/data",100,temperature_treatment,co2_treatment)
+    #docker_opts = "-v {0}:/data:z ".format(host_data_resultDir)
+    #docker_cmd = "Rscript reformat_to_csv_backup.R {0} {1} {2}".format("/data","/data",100)
+    # docker_opts = None
+    # docker_cmd = None
+    result = docker_task(docker_name="ecopad_r",docker_opts=docker_opts,docker_command=docker_cmd,id=task_id)
+    
     #Clean up result Directory
     clean_up(resultDir)
     #Create Report
@@ -192,12 +207,32 @@ def teco_spruce_forecast(pars,forecast_year,forecast_day,temperature_treatment=0
 
 
 def clean_up(resultDir):
+
     move("{0}/SPRUCE_pars.txt".format(resultDir),"{0}/input/SPRUCE_pars.txt".format(resultDir))
     move("{0}/SPRUCE_yearly.txt".format(resultDir),"{0}/output/SPRUCE_yearly.txt".format(resultDir))
     for mvfile in glob("{0}/Simu_dailyflux*.txt".format(resultDir)):
         move(mvfile, "{0}/output".format(resultDir))
     for mvfile in glob("{0}/*.png".format(resultDir)):
         move(mvfile, "{0}/plot".format(resultDir))
+
+    # Yuanyuan add to clear up forecast_csv
+    current_date=datetime.now().strftime("%Y-%m-%d")
+    if not os.path.exists("{0}/forecast_csv/{1}".format(basedir,current_date)):
+        os.makedirs("{0}/forecast_csv/{1}".format(basedir,current_date))
+    #for afile in glob.iglob("{0}/forecast_csv/{1}*".format(basedir,current_date)):
+    #	print afile
+    # 	os.remove(afile)
+   
+    try: 
+        for mvfile in glob("{0}/*.csv".format(resultDir)):
+            head,tail=os.path.split(mvfile)
+            dst_file=os.path.join("{0}/forecast_csv/{1}/{2}".format(basedir,current_date,tail))
+            if os.path.exists(dst_file):
+                os.remove(dst_file)
+            move(mvfile,"{0}/forecast_csv/{1}".format(basedir,current_date))
+    except:
+        pass 
+
     try:
         move("{0}/SPRUCE_da_pars.txt".format(resultDir),"{0}/input/SPRUCE_da_pars.txt".format(resultDir))
         move("{0}/Paraest.txt".format(resultDir),"{0}/input/Paraest.txt".format(resultDir))
