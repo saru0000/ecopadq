@@ -218,8 +218,13 @@ def clean_up(resultDir):
     # Yuanyuan add to clear up forecast_csv
     #current_date=datetime.now().strftime("%Y-%m-%d")
     current_date=datetime.now().strftime("%Y")
-    if not os.path.exists("{0}/forecast_csv/{1}".format(basedir,current_date)):
-        os.makedirs("{0}/forecast_csv/{1}".format(basedir,current_date))
+    #if not os.path.exists("{0}/forecast_csv/{1}".format(basedir,current_date)):
+    #    os.makedirs("{0}/forecast_csv/{1}".format(basedir,current_date))
+    
+    # make one folder for all the time, changed 01_04_2017
+    if not os.path.exists("{0}/forecast_csv/ecopad_vdv".format(basedir)):
+        os.makedirs("{0}/forecast_csv/ecopad_vdv".format(basedir))
+
     #for afile in glob.iglob("{0}/forecast_csv/{1}*".format(basedir,current_date)):
     #	print afile
     # 	os.remove(afile)
@@ -227,7 +232,9 @@ def clean_up(resultDir):
     try: 
         for mvfile in glob("{0}/*.csv".format(resultDir)):
             head,tail=os.path.split(mvfile)
-            dst_file=os.path.join("{0}/forecast_csv/{1}/{2}".format(basedir,current_date,tail))
+            #dst_file=os.path.join("{0}/forecast_csv/{1}/{2}".format(basedir,current_date,tail))
+            # modified 01_04_2017
+            dst_file=os.path.join("{0}/forecast_csv/ecopad_vdv/{1}".format(basedir,tail))
             i=1 
             if os.path.exists(dst_file):
                 with open(dst_file, 'a') as singleFile:
@@ -238,7 +245,8 @@ def clean_up(resultDir):
                        i=2
                 os.remove(mvfile)
         else: 
-            move(mvfile,"{0}/forecast_csv/{1}".format(basedir,current_date))
+            #move(mvfile,"{0}/forecast_csv/{1}".format(basedir,current_date))
+            move(mvfile,"{0}/forecast_csv/ecopad_vdv".format(basedir)) 
     except:
         pass 
 
