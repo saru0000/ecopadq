@@ -35,6 +35,15 @@ def add(a, b):
     result1 = a + b
     return result1
 
+@task()
+def mult(a, b):
+    """ Example task that multiplicate two numbers or strings
+        args: x and y
+        return substraction of strings
+    """
+    result1 = a * b
+return result1
+
 
 @task()
 def teco_spruce_simulation(pars): # ,model_type="0", da_params=None):
